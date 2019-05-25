@@ -12,9 +12,9 @@ namespace AccountingPerformanceModel
         Четыре,
         [Description("5")]
         Пять,
-        [Description("зачёт")]
+        [Description("зачет")]
         Зачёт,
-        [Description("незачёт")]
+        [Description("незачет")]
         Незачёт
     }
 

@@ -1,4 +1,6 @@
 ﻿using AccountingPerformanceModel;
+using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ViewGenerator;
@@ -122,6 +124,51 @@ namespace AccountingPerformanceView
             var performance = (Performance)cbGrade.Tag;
             performance.Grade = (Grade)((EnumCover)cbGrade.SelectedItem).Item;
             lvPerformance.FocusedItem.SubItems[2].Text = EnumConverter.GetName(performance.Grade);
+        }
+
+        /// <summary>
+        /// Выдача ведомости семестровых оценок
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnScorecard_Click(object sender, System.EventArgs e)
+        {
+            var matter = (Matter)cbMatters.SelectedItem;
+            var studyGroup = (StudyGroup)cbStudyGroups.SelectedItem;
+            var semester = (Semester)cbSemesters.SelectedItem;
+            if (matter == null || studyGroup == null || semester == null) return;
+            try
+            {
+                var app = new Microsoft.Office.Interop.Word.Application();
+                var filename = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Reports",
+                                            "SemesterScorecard.docx");
+                var oDoc = app.Documents.Add(filename);
+                oDoc.Application.Visible = true;
+                var course = semester.Number / 2 + 1;
+                var semesterInCourse = semester.Number / course;
+                oDoc.Bookmarks[$"matter"].Range.Text = matter.ToString();
+                oDoc.Bookmarks[$"group"].Range.Text = studyGroup.ToString();
+                oDoc.Bookmarks[$"course"].Range.Text = course.ToString();
+                oDoc.Bookmarks[$"semester"].Range.Text = semesterInCourse.ToString();
+                oDoc.Bookmarks[$"speciality"].Range.Text = Helper.SpecialityById(studyGroup.IdSpeciality);
+                var row = 1;
+                foreach (var item in _root.Performances.Where(x => x.IdMatter == matter.IdMatter &&
+                                                   x.IdSemester == semester.IdSemester))
+                {
+                    var student = Helper.GetStudentById(item.IdStudent);
+                    if (student == null) continue;
+                    if (student.IdStudyGroup != studyGroup.IdStudyGroup) continue;
+                    oDoc.Bookmarks[$"fio{row}"].Range.Text = student.FullName;
+                    oDoc.Bookmarks[$"grade{row}"].Range.Text = EnumConverter.GetName(item.Grade);
+                    row++;
+                }
+                Application.OpenForms[0].SendToBack();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Ошибка");
+            }
+
         }
     }
 }

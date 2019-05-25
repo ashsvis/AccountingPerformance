@@ -42,6 +42,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnExit = new System.Windows.Forms.Button();
+            this.btnScorecard = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +62,7 @@
             this.tableLayoutPanel1.Controls.Add(this.cbSemesters, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnExit, 3, 3);
+            this.tableLayoutPanel1.Controls.Add(this.btnScorecard, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -212,6 +214,17 @@
             this.btnExit.Text = "Выход";
             this.btnExit.UseVisualStyleBackColor = true;
             // 
+            // btnScorecard
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.btnScorecard, 2);
+            this.btnScorecard.Location = new System.Drawing.Point(8, 338);
+            this.btnScorecard.Name = "btnScorecard";
+            this.btnScorecard.Size = new System.Drawing.Size(193, 23);
+            this.btnScorecard.TabIndex = 5;
+            this.btnScorecard.Text = "Ведомость оценок за семестр";
+            this.btnScorecard.UseVisualStyleBackColor = true;
+            this.btnScorecard.Click += new System.EventHandler(this.btnScorecard_Click);
+            // 
             // GroupPerformanceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -248,5 +261,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ComboBox cbGrade;
+        private System.Windows.Forms.Button btnScorecard;
     }
 }
