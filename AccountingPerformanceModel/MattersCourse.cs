@@ -7,21 +7,6 @@ using ViewGenerator;
 namespace AccountingPerformanceModel
 {
     [Serializable]
-    public enum CourseType
-    {
-        Лекция,
-        Практика,
-        Курсовая
-    }
-
-    [Serializable]
-    public enum RatingSystem
-    {
-        Экзамен,
-        Зачёт
-    }
-
-    [Serializable]
     [Description("Курс предметов")]
     public class MattersCourse : IComparable<MattersCourse>
     {

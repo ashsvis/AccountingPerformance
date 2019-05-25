@@ -43,8 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CourseType.cs" />
     <Compile Include="Debtor.cs" />
+    <Compile Include="Grade.cs" />
     <Compile Include="OleDbServer.cs" />
+    <Compile Include="RatingSystem.cs" />
     <Compile Include="Reports\Report.cs" />
     <Compile Include="Reports\ReportColumns.cs" />
     <Compile Include="Reports\ReportRow.cs" />
