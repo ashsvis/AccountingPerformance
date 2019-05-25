@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingPerformanceView", "AccountingPerformanceView\AccountingPerformanceView.csproj", "{DE404B3E-F5CE-417A-ADE0-E7D075A99473}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingPerformanceModel", "AccountingPerformanceModel\AccountingPerformanceModel.csproj", "{4C754D2E-3BDD-4EEF-9191-A802CC24562A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE404B3E-F5CE-417A-ADE0-E7D075A99473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE404B3E-F5CE-417A-ADE0-E7D075A99473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE404B3E-F5CE-417A-ADE0-E7D075A99473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE404B3E-F5CE-417A-ADE0-E7D075A99473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C754D2E-3BDD-4EEF-9191-A802CC24562A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C754D2E-3BDD-4EEF-9191-A802CC24562A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C754D2E-3BDD-4EEF-9191-A802CC24562A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C754D2E-3BDD-4EEF-9191-A802CC24562A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6919415E-73B3-402B-AC8F-CB58B7DF42B6}
+	EndGlobalSection
+EndGlobal
