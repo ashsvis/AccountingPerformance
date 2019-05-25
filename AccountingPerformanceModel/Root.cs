@@ -18,6 +18,8 @@ namespace AccountingPerformanceModel
         public Performances Performances { get; set; }
         public Semesters Semesters { get; set; }
 
+        public Teachers Teachers { get; set; }
+
         public Root()
         {
             RegistryTables();
@@ -43,6 +45,8 @@ namespace AccountingPerformanceModel
             RegistryTable("Performances", new Performance(), Performances);
             if (Semesters == null) Semesters = new Semesters();
             RegistryTable("Semesters", new Semester(), Semesters);
+            if (Teachers == null) Teachers = new Teachers();
+            RegistryTable("Teachers", new Teacher(), Teachers);
 
         }
 

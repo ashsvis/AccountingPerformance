@@ -52,6 +52,7 @@
     <Compile Include="Reports\ReportColumns.cs" />
     <Compile Include="Reports\ReportRow.cs" />
     <Compile Include="Reports\ReportsBuilder.cs" />
+    <Compile Include="Teacher.cs" />
     <Compile Include="ViewGenerator\EnumConverter.cs" />
     <Compile Include="ViewGenerator\EnumCover.cs" />
     <Compile Include="Helper.cs" />

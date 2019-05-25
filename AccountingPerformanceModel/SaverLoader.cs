@@ -197,6 +197,25 @@ namespace AccountingPerformanceModel
             root.Students.Changed = false;
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
+            // преподаватели
+            dataSet = server.GetRows("Teachers");
+            if (dataSet.Tables.Count > 0)
+                foreach (var row in dataSet.Tables[0].Rows.Cast<DataRow>())
+                {
+                    if (row.ItemArray.Length != 5) continue;
+                    var buff = (byte[])row.ItemArray[9];
+                    root.Teachers.Add(new Teacher
+                    {
+                        IdTeacher = Guid.Parse(row.ItemArray[0].ToString().Substring(1)),
+                        FullName = row.ItemArray[1].ToString(),
+                        IdMatter = Guid.Parse(row.ItemArray[2].ToString().Substring(1)),
+                        Login = row.ItemArray[3].ToString(),
+                        Password = row.ItemArray[4].ToString()
+                    });
+                }
+            root.Teachers.Changed = false;
+            OperationResult = server.LastError;
+            if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
 
             return root;
         }
@@ -397,6 +416,29 @@ namespace AccountingPerformanceModel
                     OperationResult = server.LastError;
                 }
                 root.Students.Changed = false;
+            }
+            // преподаватели
+            if (root.Teachers.Changed)
+            {
+                server.DeleteInto("Teachers");
+                OperationResult = server.LastError;
+                foreach (var item in root.Teachers)
+                {
+                    var columns = new Dictionary<string, object>
+                    {
+                        { "IdTeacher", "P" + item.IdTeacher.ToString() },
+                        { "FullName", item.FullName },
+                        { "IdMatter", "P" + item.IdMatter.ToString() },
+                        { "Login", item.Login },
+                        { "Password", item.Password }
+                    };
+                    if (server.KeyRecordExists("Teachers", "IdTeacher", item.IdTeacher))
+                        server.UpdateInto("Teachers", columns);
+                    else
+                        server.InsertInto("Teachers", columns);
+                    OperationResult = server.LastError;
+                }
+                root.Teachers.Changed = false;
             }
         }
 

@@ -18,6 +18,7 @@ namespace AccountingPerformanceView
         public static StudentForm StudentForm;              // ссылка на форму справочника курсов
         public static SemestersForm SemestersForm;          // ссылка на форму справочника семестров
         public static ListOfDebtorsForm ListOfDebtorsForm;  // ссылка на форму должников
+        public static TeachersForm TeachersForm; // ссылка на форму преподавателей
         private Student _student;
         private StudyGroup _group;
 
@@ -541,6 +542,15 @@ namespace AccountingPerformanceView
                     GridPanelBuilder.FindText((GridPanel)panel3.Controls[0], tbFind.Text);
                 break;
             }
+        }
+
+        private void tsmiTeachers_Click(object sender, EventArgs e)
+        {
+            // если ранее не показывался, то создаем новое окно
+            if (TeachersForm == null)
+                TeachersForm = new TeachersForm(_root);
+            // показываем окно 
+            ShowForm(TeachersForm);
         }
     }
 
