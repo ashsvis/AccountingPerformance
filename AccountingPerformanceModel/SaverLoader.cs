@@ -203,7 +203,6 @@ namespace AccountingPerformanceModel
                 foreach (var row in dataSet.Tables[0].Rows.Cast<DataRow>())
                 {
                     if (row.ItemArray.Length != 5) continue;
-                    var buff = (byte[])row.ItemArray[9];
                     root.Teachers.Add(new Teacher
                     {
                         IdTeacher = Guid.Parse(row.ItemArray[0].ToString().Substring(1)),

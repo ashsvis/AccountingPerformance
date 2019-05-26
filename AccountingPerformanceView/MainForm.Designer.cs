@@ -30,6 +30,7 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiTeachers = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMatters = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSpecialities = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMatterCourses = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +64,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.tsmiTeachers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLogin = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -85,6 +87,8 @@
             // tsmiFile
             // 
             this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiLogin,
+            this.toolStripMenuItem4,
             this.tsmiTeachers,
             this.tsmiMatters,
             this.tsmiSpecialities,
@@ -95,6 +99,14 @@
             this.tsmiFile.Name = "tsmiFile";
             this.tsmiFile.Size = new System.Drawing.Size(48, 20);
             this.tsmiFile.Text = "Файл";
+            this.tsmiFile.DropDownOpening += new System.EventHandler(this.tsmiFile_DropDownOpening);
+            // 
+            // tsmiTeachers
+            // 
+            this.tsmiTeachers.Name = "tsmiTeachers";
+            this.tsmiTeachers.Size = new System.Drawing.Size(283, 22);
+            this.tsmiTeachers.Text = "Преподаватели";
+            this.tsmiTeachers.Click += new System.EventHandler(this.tsmiTeachers_Click);
             // 
             // tsmiMatters
             // 
@@ -412,12 +424,17 @@
             this.panel3.Size = new System.Drawing.Size(839, 287);
             this.panel3.TabIndex = 4;
             // 
-            // tsmiTeachers
+            // tsmiLogin
             // 
-            this.tsmiTeachers.Name = "tsmiTeachers";
-            this.tsmiTeachers.Size = new System.Drawing.Size(283, 22);
-            this.tsmiTeachers.Text = "Преподаватели";
-            this.tsmiTeachers.Click += new System.EventHandler(this.tsmiTeachers_Click);
+            this.tsmiLogin.Name = "tsmiLogin";
+            this.tsmiLogin.Size = new System.Drawing.Size(283, 22);
+            this.tsmiLogin.Text = "Вход...";
+            this.tsmiLogin.Click += new System.EventHandler(this.tsmiLogin_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(280, 6);
             // 
             // MainForm
             // 
@@ -485,6 +502,8 @@
         private System.Windows.Forms.Button btnStudent;
         private System.Windows.Forms.ToolStripMenuItem tsmiSemesters;
         private System.Windows.Forms.ToolStripMenuItem tsmiTeachers;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLogin;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
     }
 }
 

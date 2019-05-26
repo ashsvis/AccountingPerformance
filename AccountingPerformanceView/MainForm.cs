@@ -21,6 +21,7 @@ namespace AccountingPerformanceView
         public static TeachersForm TeachersForm; // ссылка на форму преподавателей
         private Student _student;
         private StudyGroup _group;
+        private bool _loggedIn;
 
         /// <summary>
         /// Конструктор главной формы
@@ -75,6 +76,8 @@ namespace AccountingPerformanceView
             //}
             #endregion
 
+            UpdateInterface();
+
             panel2.Controls.Add(GridPanelBuilder.BuildPropertyPanel(_root, new StudyGroup(),
                  _root.StudyGroups.FilteredBySpecialityAndSpecialization(Guid.Empty, Guid.Empty)));
             panel2.Enabled = false;
@@ -107,6 +110,40 @@ namespace AccountingPerformanceView
         private void GridPanelBuilder_Error(string message, string caption)
         {
             MessageBox.Show(this, message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+
+        /// <summary>
+        /// Обработчик меню входа
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiLogin_Click(object sender, EventArgs e)
+        {
+            if (_root.Teachers.Count > 0)
+            {
+                var frm = new LoginForm(_root);
+                var lastLogin = _loggedIn;
+                _loggedIn = frm.ShowDialog(this) == DialogResult.OK;
+                if (lastLogin) _loggedIn = lastLogin;
+            }
+            else
+            {
+                MessageBox.Show("Нет ни одной записи в таблице пользователей");
+                _loggedIn = true;
+            }
+            UpdateInterface();
+        }
+
+        private void UpdateInterface()
+        {
+            tableLayoutPanel1.Enabled = tsmiOperations.Enabled = tsmiReports.Enabled = _loggedIn;
+        }
+
+        private void tsmiFile_DropDownOpening(object sender, EventArgs e)
+        {
+            tsmiMatters.Enabled = tsmiSpecialities.Enabled = tsmiTeachers.Enabled = 
+                tsmiMatterCourses.Enabled = tsmiSemesters.Enabled = _loggedIn;
         }
 
         /// <summary>
