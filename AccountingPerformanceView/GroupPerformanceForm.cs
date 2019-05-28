@@ -56,17 +56,42 @@ namespace AccountingPerformanceView
             var matter = (Matter)cbMatters.SelectedItem;
             var studyGroup = (StudyGroup)cbStudyGroups.SelectedItem;
             var semester = (Semester)cbSemesters.SelectedItem;
+            cbGrade.Visible = false;
             if (matter == null || studyGroup == null || semester == null) return;
             try
             {
                 lvPerformance.BeginUpdate();
                 lvPerformance.Items.Clear();
-                foreach (var item in _root.Performances.Where(x => x.IdMatter == matter.IdMatter &&
-                                                                   x.IdSemester == semester.IdSemester))
+                // этот фрагмент заменен следующим фрагментом ниже
+                //foreach (var item in _root.Performances.Where(x => x.IdMatter == matter.IdMatter &&
+                //                                                   x.IdSemester == semester.IdSemester))
+                //{
+                //    var student = Helper.GetStudentById(item.IdStudent);
+                //    if (student == null) continue;
+                //    if (student.IdStudyGroup != studyGroup.IdStudyGroup) continue;
+                //    var lvi = new ListViewItem(student.ToString());
+                //    lvi.Tag = item;
+                //    lvi.SubItems.Add(semester.ToString());
+                //    lvi.SubItems.Add(EnumConverter.GetName(item.Grade));
+                //    lvPerformance.Items.Add(lvi);
+                //}
+                // новая логика заполнения таблицы для выставления оценок группе по предмету
+                foreach (var student in _root.Students.Where(x => x.IdStudyGroup == studyGroup.IdStudyGroup))
                 {
-                    var student = Helper.GetStudentById(item.IdStudent);
-                    if (student == null) continue;
-                    if (student.IdStudyGroup != studyGroup.IdStudyGroup) continue;
+                    var item = _root.Performances.FirstOrDefault(x => x.IdMatter == matter.IdMatter &&
+                                                                      x.IdSemester == semester.IdSemester &&
+                                                                      x.IdStudent == student.IdStudent);
+                    if (item == null)
+                    {
+                        item = new Performance
+                        {
+                            IdStudent = student.IdStudent,
+                            IdMatter = matter.IdMatter,
+                            IdSemester = semester.IdSemester,
+                            Grade = Grade.Нет
+                        };
+                        _root.Performances.Add(item);
+                    }
                     var lvi = new ListViewItem(student.ToString());
                     lvi.Tag = item;
                     lvi.SubItems.Add(semester.ToString());
@@ -159,7 +184,7 @@ namespace AccountingPerformanceView
                     if (student == null) continue;
                     if (student.IdStudyGroup != studyGroup.IdStudyGroup) continue;
                     oDoc.Bookmarks[$"fio{row}"].Range.Text = student.FullName;
-                    oDoc.Bookmarks[$"grade{row}"].Range.Text = EnumConverter.GetName(item.Grade);
+                    //oDoc.Bookmarks[$"grade{row}"].Range.Text = EnumConverter.GetName(item.Grade); - эта строка не нужна, оказывается
                     row++;
                 }
                 Application.OpenForms[0].SendToBack();

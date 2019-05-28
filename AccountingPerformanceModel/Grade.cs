@@ -15,7 +15,10 @@ namespace AccountingPerformanceModel
         [Description("зачет")]
         Зачёт,
         [Description("незачет")]
-        Незачёт
+        Незачёт,
+        // добавлено новое состояние
+        [Description("(не сдавал)")]
+        Нет,
     }
 
 }
