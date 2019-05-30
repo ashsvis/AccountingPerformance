@@ -62,7 +62,7 @@ namespace AccountingPerformanceView
         /// <param name="student"></param>
         private void UpdatePerformanceTable(Student student)
         {
-            if (_student != null)
+            if (_student != null && _semester != null)
             {
                 var panel = GridPanelBuilder.BuildPropertyPanel(_root, new Performance(), _root.Performances,
                      _root.Performances.FilteredByStudentSemester(student.IdStudent, _semester.IdSemester),

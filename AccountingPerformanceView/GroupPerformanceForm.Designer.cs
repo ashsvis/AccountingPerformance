@@ -81,7 +81,7 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(8, 5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 30);
+            this.label1.Size = new System.Drawing.Size(88, 30);
             this.label1.TabIndex = 0;
             this.label1.Text = "Предмет:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -92,7 +92,7 @@
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Location = new System.Drawing.Point(8, 35);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 29);
+            this.label2.Size = new System.Drawing.Size(88, 39);
             this.label2.TabIndex = 0;
             this.label2.Text = "Группа:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -101,9 +101,9 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(207, 35);
+            this.label3.Location = new System.Drawing.Point(180, 35);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 29);
+            this.label3.Size = new System.Drawing.Size(84, 39);
             this.label3.TabIndex = 0;
             this.label3.Text = "Семестр:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -114,9 +114,9 @@
             this.cbMatters.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbMatters.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMatters.FormattingEnabled = true;
-            this.cbMatters.Location = new System.Drawing.Point(72, 8);
+            this.cbMatters.Location = new System.Drawing.Point(102, 8);
             this.cbMatters.Name = "cbMatters";
-            this.cbMatters.Size = new System.Drawing.Size(280, 23);
+            this.cbMatters.Size = new System.Drawing.Size(250, 33);
             this.cbMatters.TabIndex = 1;
             this.cbMatters.SelectionChangeCommitted += new System.EventHandler(this.cbMatters_SelectionChangeCommitted);
             // 
@@ -125,9 +125,9 @@
             this.cbStudyGroups.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbStudyGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyGroups.FormattingEnabled = true;
-            this.cbStudyGroups.Location = new System.Drawing.Point(72, 38);
+            this.cbStudyGroups.Location = new System.Drawing.Point(102, 38);
             this.cbStudyGroups.Name = "cbStudyGroups";
-            this.cbStudyGroups.Size = new System.Drawing.Size(129, 23);
+            this.cbStudyGroups.Size = new System.Drawing.Size(72, 33);
             this.cbStudyGroups.TabIndex = 2;
             this.cbStudyGroups.SelectionChangeCommitted += new System.EventHandler(this.cbMatters_SelectionChangeCommitted);
             // 
@@ -138,7 +138,7 @@
             this.cbSemesters.FormattingEnabled = true;
             this.cbSemesters.Location = new System.Drawing.Point(270, 38);
             this.cbSemesters.Name = "cbSemesters";
-            this.cbSemesters.Size = new System.Drawing.Size(82, 23);
+            this.cbSemesters.Size = new System.Drawing.Size(82, 33);
             this.cbSemesters.TabIndex = 2;
             this.cbSemesters.SelectionChangeCommitted += new System.EventHandler(this.cbMatters_SelectionChangeCommitted);
             // 
@@ -148,9 +148,9 @@
             this.panel1.Controls.Add(this.cbGrade);
             this.panel1.Controls.Add(this.lvPerformance);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(8, 67);
+            this.panel1.Location = new System.Drawing.Point(8, 77);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(344, 265);
+            this.panel1.Size = new System.Drawing.Size(344, 255);
             this.panel1.TabIndex = 3;
             // 
             // cbGrade
@@ -159,7 +159,7 @@
             this.cbGrade.FormattingEnabled = true;
             this.cbGrade.Location = new System.Drawing.Point(241, 43);
             this.cbGrade.Name = "cbGrade";
-            this.cbGrade.Size = new System.Drawing.Size(82, 23);
+            this.cbGrade.Size = new System.Drawing.Size(82, 33);
             this.cbGrade.TabIndex = 1;
             this.cbGrade.Visible = false;
             this.cbGrade.SelectionChangeCommitted += new System.EventHandler(this.cbGrade_SelectionChangeCommitted);
@@ -180,7 +180,7 @@
             this.lvPerformance.Name = "lvPerformance";
             this.lvPerformance.ShowGroups = false;
             this.lvPerformance.ShowItemToolTips = true;
-            this.lvPerformance.Size = new System.Drawing.Size(344, 265);
+            this.lvPerformance.Size = new System.Drawing.Size(344, 255);
             this.lvPerformance.TabIndex = 0;
             this.lvPerformance.UseCompatibleStateImageBehavior = false;
             this.lvPerformance.View = System.Windows.Forms.View.Details;
@@ -219,7 +219,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.btnScorecard, 2);
             this.btnScorecard.Location = new System.Drawing.Point(8, 338);
             this.btnScorecard.Name = "btnScorecard";
-            this.btnScorecard.Size = new System.Drawing.Size(193, 23);
+            this.btnScorecard.Size = new System.Drawing.Size(166, 23);
             this.btnScorecard.TabIndex = 5;
             this.btnScorecard.Text = "Ведомость оценок за семестр";
             this.btnScorecard.UseVisualStyleBackColor = true;
@@ -227,7 +227,7 @@
             // 
             // GroupPerformanceForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(360, 371);

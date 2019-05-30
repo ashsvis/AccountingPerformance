@@ -24,9 +24,9 @@ namespace AccountingPerformanceView
                 var value = new EnumCover() { Item = (Grade)item };
                 cbGrade.Items.Add(value);
             }
-            // селектор предметов, добавляем только те, по которым сдавали
+            // селектор предметов
             foreach (var item in _root.Matters)
-                if (_root.Performances.Any(x => x.IdMatter == item.IdMatter))
+                //--- if (_root.Performances.Any(x => x.IdMatter == item.IdMatter))
                     cbMatters.Items.Add(item);
             if (cbMatters.Items.Count > 0)
                 cbMatters.SelectedItem = _matter = (Matter)cbMatters.Items[0];
@@ -36,14 +36,16 @@ namespace AccountingPerformanceView
                     cbStudyGroups.Items.Add(item);
             if (cbStudyGroups.Items.Count > 0)
                 cbStudyGroups.SelectedItem = _group = (StudyGroup)cbStudyGroups.Items[0];
-            // селектор семестров, добавляем только те, в которых сдавали
+            // селектор семестров
             _semester = root.Semesters.FirstOrDefault(x => x.Number == 1);
             foreach (var item in _root.Semesters)
-                if (_root.Performances.Any(x => x.IdSemester == item.IdSemester))
+                //--- if (_root.Performances.Any(x => x.IdSemester == item.IdSemester))
                     cbSemesters.Items.Add(item);
             cbSemesters.SelectedItem = _semester;
 
             panel1.Enabled = _semester != null;
+
+            cbMatters_SelectionChangeCommitted(null, new EventArgs());
         }
 
         /// <summary>
