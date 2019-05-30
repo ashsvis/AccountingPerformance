@@ -206,12 +206,19 @@ namespace AccountingPerformanceView
             if (MessageBox.Show("Удалить эту запись?", "Удаление записи о студенте",
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
                                 MessageBoxDefaultButton.Button2) != DialogResult.Yes) return;
-            _root.Students.Remove(_student);
-            _student = null;
-            UpdateFields(_speciality, _specialization, null);
-            gbStudyProgress.Enabled = btnDelete.Enabled = false;
-            (_owner as UpdateData)?.UpdateStudents();
-            Close();
+            try
+            {
+                _root.Students.Remove(_student);
+                _student = null;
+                UpdateFields(_speciality, _specialization, null);
+                gbStudyProgress.Enabled = btnDelete.Enabled = false;
+                (_owner as UpdateData)?.UpdateStudents();
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
