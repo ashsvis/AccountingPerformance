@@ -46,7 +46,8 @@ namespace AccountingPerformanceView
             fileName = Path.ChangeExtension(System.Windows.Forms.Application.ExecutablePath, ".mdb");
             if (File.Exists(fileName))
             {
-                _root = SaverLoader.LoadFromBase("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=AccountingPerformanceView.mdb;");
+                Helper.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=AccountingPerformanceView.mdb;";
+                _root = SaverLoader.LoadFromBase(Helper.ConnectionString);
                 if (!string.IsNullOrWhiteSpace(SaverLoader.OperationResult))
                     Console.WriteLine("Ошибка загрузки: " + SaverLoader.OperationResult);
                 // при загрузке из файла корневой объект вновь создается, поэтому снова передаем ссылку на него
@@ -98,8 +99,8 @@ namespace AccountingPerformanceView
             // сохраняем базу в локальный файл
             //SaverLoader.SaveToFile(Path.ChangeExtension(System.Windows.Forms.Application.ExecutablePath, ".bin"), _root);
             #endregion
-            // сохраняем базу
-            SaverLoader.SaveToBase("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=AccountingPerformanceView.mdb;", _root);
+            // сохраняем базу, исключен 29.06.2019
+            // -- SaverLoader.SaveToBase("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=AccountingPerformanceView.mdb;", _root);
         }
 
         /// <summary>

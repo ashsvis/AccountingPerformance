@@ -33,6 +33,7 @@ namespace AccountingPerformanceView
                                                  .GroupBy(x => x.IdStudent).OrderBy(x => x.Key.ToString()))
                     foreach (var item in performances.Where(x => x.Grade == Grade.Незачёт))
                     {
+                        if (_root.Students.FirstOrDefault(x => x.IdStudent == item.IdStudent) == null) continue;
                         // заполняем список должников
                         _debtors.Add(new Debtor
                         {

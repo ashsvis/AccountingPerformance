@@ -15,7 +15,7 @@ namespace AccountingPerformanceView
         {
             InitializeComponent();
             _root = root;
-            // содаем панель с таблицей автоматически по классу и списку
+            // создаём панель с таблицей автоматически по классу и списку
             panel1.Controls.Add(GridPanelBuilder.BuildPropertyPanel(root, new Matter(), root.Matters));
         }
 
