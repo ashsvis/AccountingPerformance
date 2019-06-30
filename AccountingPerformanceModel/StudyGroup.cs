@@ -40,7 +40,10 @@ namespace AccountingPerformanceModel
     public class StudyGroups : List<StudyGroup>
     {
         [NonSerialized]
-        public bool Changed;
+        public bool Loaded;
+
+        // -- [NonSerialized]
+        // -- public bool Changed;
 
         public new void Add(StudyGroup item)
         {
@@ -48,19 +51,48 @@ namespace AccountingPerformanceModel
                 throw new Exception($"Группа \"{item}\" уже существует!");
             base.Add(item);
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdStudyGroup", "P" + item.IdStudyGroup.ToString() },
+                        { "Number", item.Number },
+                        { "TrainingPeriod", item.TrainingPeriod },
+                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+                        { "IdSpecialization", "P" + item.IdSpecialization.ToString() }
+                    };
+            server.InsertInto("StudyGroups", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public void ChangeTo(StudyGroup old, StudyGroup anew)
         {
-            if (base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
+            if (old.IdStudyGroup != anew.IdStudyGroup &&
+                base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
                 throw new Exception($"Группа \"{anew}\" уже существует!");
             old.Number = anew.Number;
             old.TrainingPeriod = anew.TrainingPeriod;
             old.IdSpeciality = anew.IdSpeciality;
             old.IdSpecialization = anew.IdSpecialization;
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdStudyGroup", "P" + anew.IdStudyGroup.ToString() },
+                        { "Number", anew.Number },
+                        { "TrainingPeriod", anew.TrainingPeriod },
+                        { "IdSpeciality", "P" + anew.IdSpeciality.ToString() },
+                        { "IdSpecialization", "P" + anew.IdSpecialization.ToString() }
+                    };
+            server.UpdateInto("StudyGroups", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public new void Remove(StudyGroup item)
@@ -68,7 +100,17 @@ namespace AccountingPerformanceModel
             if (Helper.StudyGroupUsed(item.IdSpecialization))
                 throw new Exception($"Группа \"{item}\" ещё используется!");
             base.Remove(item);
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdStudyGroup", "P" + item.IdStudyGroup.ToString() },
+                    };
+            server.DeleteInto("StudyGroups", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public List<StudyGroup> FilteredBySpecialityAndSpecialization(Guid idSpeciality, Guid idSpecialization)

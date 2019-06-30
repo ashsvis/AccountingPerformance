@@ -41,7 +41,10 @@ namespace AccountingPerformanceModel
     public class Performances : List<Performance>
     {
         [NonSerialized]
-        public bool Changed;
+        public bool Loaded;
+
+        // -- [NonSerialized]
+        // -- public bool Changed;
 
         public new void Add(Performance item)
         {
@@ -49,12 +52,27 @@ namespace AccountingPerformanceModel
                 throw new Exception($"Успеваемость \"{item}\" уже существует!");
             base.Add(item);
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdPerformance", "P" + item.IdPerformance.ToString() },
+                        { "IdSemester", "P" + item.IdSemester.ToString() },
+                        { "IdMatter", "P" + item.IdMatter.ToString() },
+                        { "Grade", item.Grade },
+                        { "IdStudent", "P" + item.IdStudent.ToString() }
+                    };
+            server.InsertInto("Performances", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public void ChangeTo(Performance old, Performance anew)
         {
-            if (base.FindAll(x => x.IdStudent != anew.IdStudent &&
+            if (old.IdPerformance != anew.IdPerformance &&
+                base.FindAll(x => x.IdStudent != anew.IdStudent &&
                                   x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
                 throw new Exception($"Успеваемость \"{anew}\" уже существует!");
             old.IdSemester = anew.IdSemester;
@@ -62,7 +80,21 @@ namespace AccountingPerformanceModel
             old.Grade = anew.Grade;
             old.IdStudent = anew.IdStudent;
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdPerformance", "P" + anew.IdPerformance.ToString() },
+                        { "IdSemester", "P" + anew.IdSemester.ToString() },
+                        { "IdMatter", "P" + anew.IdMatter.ToString() },
+                        { "Grade", anew.Grade },
+                        { "IdStudent", "P" + anew.IdStudent.ToString() }
+                    };
+            server.UpdateInto("Performances", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public new void Remove(Performance item)
@@ -70,7 +102,17 @@ namespace AccountingPerformanceModel
             if (Helper.PerformanceUsed(item.IdPerformance))
                 throw new Exception($"Успеваемость \"{item}\" ещё используются!");
             base.Remove(item);
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdPerformance", "P" + item.IdPerformance.ToString() },
+                    };
+            server.DeleteInto("Performances", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public List<Performance> FilteredByStudentSemester(Guid idStudent, Guid idSemester)

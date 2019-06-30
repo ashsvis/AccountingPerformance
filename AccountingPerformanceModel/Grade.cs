@@ -6,6 +6,8 @@ namespace AccountingPerformanceModel
     [Serializable]
     public enum Grade
     {
+        [Description("2")]
+        Два,
         [Description("3")]
         Три,
         [Description("4")]

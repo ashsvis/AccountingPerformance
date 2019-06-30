@@ -47,7 +47,10 @@ namespace AccountingPerformanceModel
     public class MattersCourses : List<MattersCourse>
     {
         [NonSerialized]
-        public bool Changed;
+        public bool Loaded;
+
+        // -- [NonSerialized]
+        // -- public bool Changed;
 
         public new void Add(MattersCourse item)
         {
@@ -55,12 +58,29 @@ namespace AccountingPerformanceModel
                 throw new Exception($"Курс \"{item}\" уже существует!");
             base.Add(item);
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdMattersCourse", "P" + item.IdMatter.ToString() },
+                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+                        { "IdSpecialization", "P" + item.IdSpecialization.ToString() },
+                        { "IdMatter", "P" + item.IdMatter.ToString() },
+                        { "CourseType", item.CourseType },
+                        { "RatingSystem", item.RatingSystem },
+                        { "HoursCount", item.HoursCount }
+                    };
+            server.InsertInto("MattersCourses", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public void ChangeTo(MattersCourse old, MattersCourse anew)
         {
-            if (base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
+            if (old.IdMattersCourse != anew.IdMattersCourse &&
+                base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
                 throw new Exception($"Курс \"{anew}\" уже существует!");
             old.IdSpeciality = anew.IdSpeciality;
             old.IdSpecialization = anew.IdSpecialization;
@@ -69,7 +89,23 @@ namespace AccountingPerformanceModel
             old.RatingSystem = anew.RatingSystem;
             old.HoursCount = anew.HoursCount;
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdMattersCourse", "P" + anew.IdMatter.ToString() },
+                        { "IdSpeciality", "P" + anew.IdSpeciality.ToString() },
+                        { "IdSpecialization", "P" + anew.IdSpecialization.ToString() },
+                        { "IdMatter", "P" + anew.IdMatter.ToString() },
+                        { "CourseType", anew.CourseType },
+                        { "RatingSystem", anew.RatingSystem },
+                        { "HoursCount", anew.HoursCount }
+                    };
+            server.UpdateInto("MattersCourses", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public new void Remove(MattersCourse item)
@@ -77,7 +113,17 @@ namespace AccountingPerformanceModel
             if (Helper.MattersCourseUsed(item.IdMattersCourse))
                 throw new Exception($"Курс \"{item}\" ещё используется!");
             base.Remove(item);
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdMattersCourse", "P" + item.IdMatter.ToString() },
+                    };
+            server.DeleteInto("MattersCourses", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public List<MattersCourse> FilteredBySpecialityAndSpecialization(Guid idSpeciality, Guid idSpecialization)

@@ -62,7 +62,7 @@ namespace AccountingPerformanceModel
             using (var con = new OleDbConnection(Connection))
             {
                 con.Open();
-                var sql = $"SELECT COUNT(*) FROM [{table}] WHERE [{keyName}] = @{keyName}";
+                var sql = $"SELECT COUNT(*) FROM `{table}` WHERE `{keyName}` = @{keyName}";
                 using (OleDbCommand command = new OleDbCommand(sql, con))
                 {
                     command.Parameters.AddWithValue($"@{keyName}", "P"+valueValue.ToString());
@@ -95,11 +95,11 @@ namespace AccountingPerformanceModel
             var values = new List<string>();
             foreach (var key in columns.Keys)
             {
-                props.Add($"[{key}]");
+                props.Add($"`{key}`");
                 var value = columns[key];
                 values.Add($"@{key}");
             }
-            var sql = $"INSERT INTO {table} ({string.Join(",", props)}) VALUES ({string.Join(",", values)})";
+            var sql = $"INSERT INTO `{table}` ({string.Join(",", props)}) VALUES ({string.Join(",", values)})";
             return ExecSql(sql, columns);
         }
 
@@ -112,17 +112,36 @@ namespace AccountingPerformanceModel
         public bool UpdateInto(string table, Dictionary<string, object> columns)
         {
             // формирование запроса для изменения
-            var values = new List<string>();
-            var indexName = columns.Keys.First();
-            foreach (var key in columns.Keys.Skip(1)) values.Add($"[{key}] = @{key}");
-            var sql = $"UPDATE [{table}] SET {string.Join(", ", values)} WHERE [{indexName}]=@{indexName}";
-            return ExecSql(sql, columns);
+            // -- var values = new List<string>();
+            // -- var indexName = columns.Keys.First();
+            // -- foreach (var key in columns.Keys.Skip(1)) values.Add($"`{key}`=@{key}");
+            // -- var sql = $"UPDATE `{table}` SET {string.Join(", ", values)} WHERE [{indexName}]=@{indexName}";
+            // -- return ExecSql(sql, columns);
+            return DeleteInto(table, columns) ? InsertInto(table, columns) : false;
         }
 
+        /// <summary>
+        /// Удаление всех записей из таблицы
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
         public bool DeleteInto(string table)
         {
             // формирование запроса для удаления
-            return ExecSql($"DELETE FROM [{table}]");
+            return ExecSql($"DELETE FROM `{table}`");
+        }
+
+        /// <summary>
+        /// Удаление конкретной записи
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        public bool DeleteInto(string table, Dictionary<string, object> columns)
+        {
+            // формирование запроса для удаления
+            var indexName = columns.Keys.First();
+            return ExecSql($"DELETE FROM `{table}` WHERE `{indexName}`=@{indexName}", columns);
         }
 
         /// <summary>
@@ -136,7 +155,7 @@ namespace AccountingPerformanceModel
         {
             using (var con = new OleDbConnection(Connection))
             {
-                using (var da = new OleDbDataAdapter($"SELECT * FROM [{table}]", con))
+                using (var da = new OleDbDataAdapter($"SELECT * FROM `{table}`", con))
                 {
                     var ds = new DataSet();
                     try

@@ -22,6 +22,11 @@ namespace AccountingPerformanceModel
         }
 
         /// <summary>
+        /// Строка подключения кбазе данных, добавлено 29.06.2019
+        /// </summary>
+        public static string ConnectionString { get; set; }
+
+        /// <summary>
         /// Создание картинки из массива байт
         /// </summary>
         /// <param name="imageData"></param>
@@ -113,7 +118,8 @@ namespace AccountingPerformanceModel
         public static bool MatterUsed(Guid idMatter)
         {
             return _root.MattersCourses.Any(item => item.IdMatter == idMatter) ||
-                   _root.Performances.Any(item => item.IdMatter == idMatter); ;
+                   _root.Performances.Any(item => item.IdMatter == idMatter) ||
+                   _root.Teachers.Any(item => item.IdMatter == idMatter) ;
         }
 
         /// <summary>

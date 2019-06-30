@@ -42,7 +42,10 @@ namespace AccountingPerformanceModel
     public class Teachers : List<Teacher>
     {
         [NonSerialized]
-        public bool Changed;
+        public bool Loaded;
+
+        // -- [NonSerialized]
+        // -- public bool Changed;
 
         public new void Add(Teacher item)
         {
@@ -50,19 +53,48 @@ namespace AccountingPerformanceModel
                 throw new Exception($"Преподаватель \"{item}\" уже существует!");
             base.Add(item);
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdTeacher", "P" + item.IdTeacher.ToString() },
+                        { "FullName", item.FullName },
+                        { "IdMatter", "P" + item.IdMatter.ToString() },
+                        { "Login", item.Login },
+                        { "Password", item.Password }
+                    };
+            server.InsertInto("Teachers", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public void ChangeTo(Teacher old, Teacher anew)
         {
-            if (base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
+            if (old.IdTeacher != anew.IdTeacher &&
+                base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
                 throw new Exception($"Преподаватель \"{anew}\" уже существует!");
             old.FullName = anew.FullName;
             old.IdMatter = anew.IdMatter;
             old.Login = anew.Login;
             old.Password = anew.Password;
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdTeacher", "P" + anew.IdTeacher.ToString() },
+                        { "FullName", anew.FullName },
+                        { "IdMatter", "P" + anew.IdMatter.ToString() },
+                        { "Login", anew.Login },
+                        { "Password", anew.Password }
+                    };
+            server.UpdateInto("Teachers", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public new void Remove(Teacher item)
@@ -70,7 +102,17 @@ namespace AccountingPerformanceModel
             if (Helper.MatterUsed(item.IdMatter))
                 throw new Exception($"Преподаватель \"{item}\" ещё используется!");
             base.Remove(item);
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdTeacher", "P" + item.IdTeacher.ToString() },
+                    };
+            server.DeleteInto("Teachers", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
     }
 }

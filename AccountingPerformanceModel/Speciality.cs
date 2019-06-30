@@ -33,7 +33,10 @@ namespace AccountingPerformanceModel
     public class Specialities : List<Speciality>
     {
         [NonSerialized]
-        public bool Changed;
+        public bool Loaded;
+
+        // -- [NonSerialized]
+        // -- public bool Changed;
 
         public new void Add(Speciality item)
         {
@@ -41,17 +44,42 @@ namespace AccountingPerformanceModel
                 throw new Exception($"Специальность \"{item}\" уже существует!");
             base.Add(item);
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+                        { "Name", item.Name },
+                        { "Number", item.Number }
+                    };
+            server.InsertInto("Specialities", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public void ChangeTo(Speciality old, Speciality anew)
         {
-            if (base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
+            if (old.IdSpeciality != anew.IdSpeciality &&
+                base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
                 throw new Exception($"Специальность \"{anew}\" уже существует!");
             old.Name = anew.Name;
             old.Number = anew.Number;
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdSpeciality", "P" + anew.IdSpeciality.ToString() },
+                        { "Name", anew.Name },
+                        { "Number", anew.Number }
+                    };
+            server.UpdateInto("Specialities", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public new void Remove(Speciality item)
@@ -59,7 +87,17 @@ namespace AccountingPerformanceModel
             if (Helper.SpecialityUsed(item.IdSpeciality))
                 throw new Exception($"Специальность \"{item}\" ещё используется!");
             base.Remove(item);
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+                    };
+            server.DeleteInto("Specialities", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
     }
 }

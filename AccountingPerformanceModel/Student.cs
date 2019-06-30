@@ -65,21 +65,47 @@ namespace AccountingPerformanceModel
     public class Students : List<Student>
     {
         [NonSerialized]
-        public bool Changed;
+        public bool Loaded;
+
+        // -- [NonSerialized]
+        // -- public bool Changed;
 
         public new void Add(Student item)
         {
-            if (base.Exists(x => x.ToString().Trim() == item.ToString().Trim()))
-                throw new Exception($"Студент \"{item}\" уже существует!");
+            // -- Допускаются студенты с одиковым полным именем
+            // -- if (base.Exists(x => x.ToString().Trim() == item.ToString().Trim()))
+            // --     throw new Exception($"Студент \"{item}\" уже существует!");
             base.Add(item);
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdStudent", "P" + item.IdStudent.ToString() },
+                        { "FullName", item.FullName },
+                        { "BirthDay", item.BirthDay },
+                        { "EducationCertificate", item.EducationCertificate },
+                        { "ReceiptDate", item.ReceiptDate },
+                        { "Address", item.Address },
+                        { "PhoneNumber", item.PhoneNumber },
+                        { "SocialStatus", item.SocialStatus },
+                        { "Notes", item.Notes },
+                        { "Photo", item.Photo ?? new byte[] { } },
+                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+                        { "IdSpecialization", "P" + item.IdSpecialization.ToString() },
+                        { "IdStudyGroup", "P" + item.IdStudyGroup.ToString() }
+                    };
+            server.InsertInto("Students", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public void ChangeTo(Student old, Student anew)
         {
-            if (base.FindAll(x => x.IdStudent != anew.IdStudent &&
-                                  x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
+            if (old.IdStudent != anew.IdStudent &&
+                base.FindAll(x => x.ToString().Trim() == anew.ToString().Trim()).Count > 0)
                 throw new Exception($"Студент \"{anew}\" уже существует!");
             old.FullName = anew.FullName;
             old.BirthDay = anew.BirthDay;
@@ -94,7 +120,29 @@ namespace AccountingPerformanceModel
             old.IdSpecialization = anew.IdSpecialization;
             old.IdStudyGroup = anew.IdStudyGroup;
             base.Sort();
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdStudent", "P" + anew.IdStudent.ToString() },
+                        { "FullName", anew.FullName },
+                        { "BirthDay", anew.BirthDay },
+                        { "EducationCertificate", anew.EducationCertificate },
+                        { "ReceiptDate", anew.ReceiptDate },
+                        { "Address", anew.Address },
+                        { "PhoneNumber", anew.PhoneNumber },
+                        { "SocialStatus", anew.SocialStatus },
+                        { "Notes", anew.Notes },
+                        { "Photo", anew.Photo ?? new byte[] { } },
+                        { "IdSpeciality", "P" + anew.IdSpeciality.ToString() },
+                        { "IdSpecialization", "P" + anew.IdSpecialization.ToString() },
+                        { "IdStudyGroup", "P" + anew.IdStudyGroup.ToString() }
+                    };
+            server.UpdateInto("Students", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public new void Remove(Student item)
@@ -102,7 +150,17 @@ namespace AccountingPerformanceModel
             if (Helper.StudentUsed(item.IdStudent))
                 throw new Exception($"Данные о студенте \"{item}\" ещё используются!");
             base.Remove(item);
-            Changed = true;
+            // -- Changed = true;
+            // добавлено 29.06.2019
+            if (!Loaded) return;
+            var server = new OleDbServer { Connection = Helper.ConnectionString };
+            var columns = new Dictionary<string, object>
+                    {
+                        { "IdStudent", "P" + item.IdStudent.ToString() },
+                    };
+            server.DeleteInto("Students", columns);
+            if (!string.IsNullOrWhiteSpace(server.LastError))
+                throw new Exception(server.LastError);
         }
 
         public List<Student> FilteredBySpecialityAndSpecialization(Guid idSpeciality, Guid idSpecialization)

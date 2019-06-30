@@ -64,7 +64,8 @@ namespace AccountingPerformanceModel
                         Name = row.ItemArray[1].ToString()
                     });
                 }
-            root.Matters.Changed = false;
+            // -- root.Matters.Changed = false;
+            root.Matters.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
             // специальности
@@ -80,7 +81,8 @@ namespace AccountingPerformanceModel
                         Number = int.Parse(row.ItemArray[2].ToString())
                     });
                 }
-            root.Specialities.Changed = false;
+            // -- root.Specialities.Changed = false;
+            root.Specialities.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
             // специализации
@@ -96,7 +98,8 @@ namespace AccountingPerformanceModel
                         IdSpeciality = Guid.Parse(row.ItemArray[2].ToString().Substring(1))
                     });
                 }
-            root.Specializations.Changed = false;
+            // -- root.Specializations.Changed = false;
+            root.Specializations.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
             // курсы предметов
@@ -116,7 +119,8 @@ namespace AccountingPerformanceModel
                         HoursCount = float.Parse(row.ItemArray[6].ToString())
                     });
                 }
-            root.MattersCourses.Changed = false;
+            // -- root.MattersCourses.Changed = false;
+            root.MattersCourses.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
             // семестры
@@ -131,7 +135,8 @@ namespace AccountingPerformanceModel
                         Number = int.Parse(row.ItemArray[1].ToString())
                     });
                 }
-            root.Semesters.Changed = false;
+            // -- root.Semesters.Changed = false;
+            root.Semesters.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
             // учебные группы
@@ -149,7 +154,8 @@ namespace AccountingPerformanceModel
                         IdSpecialization = Guid.Parse(row.ItemArray[4].ToString().Substring(1))
                     });
                 }
-            root.StudyGroups.Changed = false;
+            // -- root.StudyGroups.Changed = false;
+            root.StudyGroups.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
             // успеваемости
@@ -167,7 +173,8 @@ namespace AccountingPerformanceModel
                         IdStudent = Guid.Parse(row.ItemArray[4].ToString().Substring(1))
                     });
                 }
-            root.Performances.Changed = false;
+            // -- root.Performances.Changed = false;
+            root.Performances.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
             // студенты
@@ -194,7 +201,8 @@ namespace AccountingPerformanceModel
                         IdStudyGroup = Guid.Parse(row.ItemArray[12].ToString().Substring(1))
                     });
                 }
-            root.Students.Changed = false;
+            // -- root.Students.Changed = false;
+            root.Students.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
             // преподаватели
@@ -212,7 +220,8 @@ namespace AccountingPerformanceModel
                         Password = row.ItemArray[4].ToString()
                     });
                 }
-            root.Teachers.Changed = false;
+            // -- root.Teachers.Changed = false;
+            root.Teachers.Loaded = true; // добавлено 29.06.2019
             OperationResult = server.LastError;
             if (!string.IsNullOrWhiteSpace(OperationResult)) return root;
 
@@ -224,6 +233,7 @@ namespace AccountingPerformanceModel
         /// </summary>
         public static string OperationResult { get; private set; } = string.Empty;
 
+        /* Исключен 29.06.2019
         /// <summary>
         /// Метод сохранения конфигурации в базу данных
         /// </summary>
@@ -233,213 +243,214 @@ namespace AccountingPerformanceModel
         {
             var server = new OleDbServer { Connection = connection };
             // предметы
-            if (root.Matters.Changed)
-            {
-                server.DeleteInto("Matters");
-                OperationResult = server.LastError;
-                foreach (var item in root.Matters)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdMatter", "P" + item.IdMatter.ToString() },
-                        { "Name", item.Name }
-                    };
-                    if (server.KeyRecordExists("Matters", "IdMatter", item.IdMatter))
-                        server.UpdateInto("Matters", columns);
-                    else
-                        server.InsertInto("Matters", columns);
-                    OperationResult = server.LastError;
-                }
-                root.Matters.Changed = false;
-            }
+            // -- if (root.Matters.Changed)
+            // -- {
+            // --     server.DeleteInto("Matters");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.Matters)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdMatter", "P" + item.IdMatter.ToString() },
+            // --             { "Name", item.Name }
+            // --         };
+            // --         if (server.KeyRecordExists("Matters", "IdMatter", item.IdMatter))
+            // --             server.UpdateInto("Matters", columns);
+            // --         else
+            // --             server.InsertInto("Matters", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.Matters.Changed = false;
+            //}
             // специальности
-            if (root.Specialities.Changed)
-            {
-                server.DeleteInto("Specialities");
-                OperationResult = server.LastError;
-                foreach (var item in root.Specialities)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
-                        { "Name", item.Name },
-                        { "Number", item.Number }
-                    };
-                    if (server.KeyRecordExists("Specialities", "IdSpeciality", item.IdSpeciality))
-                        server.UpdateInto("Specialities", columns);
-                    else
-                        server.InsertInto("Specialities", columns);
-                    OperationResult = server.LastError;
-                }
-                root.Specialities.Changed = false;
-            }
+            // -- if (root.Specialities.Changed)
+            // -- {
+            // --     server.DeleteInto("Specialities");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.Specialities)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+            // --             { "Name", item.Name },
+            // --             { "Number", item.Number }
+            // --         };
+            // --         if (server.KeyRecordExists("Specialities", "IdSpeciality", item.IdSpeciality))
+            // --             server.UpdateInto("Specialities", columns);
+            // --         else
+            // --             server.InsertInto("Specialities", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.Specialities.Changed = false;
+            // -- }
             // специализации
-            if (root.Specializations.Changed)
-            {
-                server.DeleteInto("Specializations");
-                OperationResult = server.LastError;
-                foreach (var item in root.Specializations)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdSpecialization", "P" + item.IdSpecialization.ToString() },
-                        { "Name", item.Name },
-                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() }
-                    };
-                    if (server.KeyRecordExists("Specializations", "IdSpecialization", item.IdSpecialization))
-                        server.UpdateInto("Specializations", columns);
-                    else
-                        server.InsertInto("Specializations", columns);
-                    OperationResult = server.LastError;
-                }
-                root.Specializations.Changed = false;
-            }
+            // -- if (root.Specializations.Changed)
+            // -- {
+            // --     server.DeleteInto("Specializations");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.Specializations)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdSpecialization", "P" + item.IdSpecialization.ToString() },
+            // --             { "Name", item.Name },
+            // --             { "IdSpeciality", "P" + item.IdSpeciality.ToString() }
+            // --         };
+            // --         if (server.KeyRecordExists("Specializations", "IdSpecialization", item.IdSpecialization))
+            // --             server.UpdateInto("Specializations", columns);
+            // --         else
+            // --             server.InsertInto("Specializations", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.Specializations.Changed = false;
+            // -- }
             // курсы предметов
-            if (root.MattersCourses.Changed)
-            {
-                server.DeleteInto("MattersCourses");
-                OperationResult = server.LastError;
-                foreach (var item in root.MattersCourses)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdMattersCourse", "P" + item.IdMatter.ToString() },
-                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
-                        { "IdSpecialization", "P" + item.IdSpecialization.ToString() },
-                        { "IdMatter", "P" + item.IdMatter.ToString() },
-                        { "CourseType", item.CourseType },
-                        { "RatingSystem", item.RatingSystem },
-                        { "HoursCount", item.HoursCount }
-                    };
-                    if (server.KeyRecordExists("MattersCourses", "IdMattersCourse", item.IdMattersCourse))
-                        server.UpdateInto("MattersCourses", columns);
-                    else
-                        server.InsertInto("MattersCourses", columns);
-                    OperationResult = server.LastError;
-                }
-                root.MattersCourses.Changed = false;
-            }
+            // -- if (root.MattersCourses.Changed)
+            // -- {
+            // --     server.DeleteInto("MattersCourses");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.MattersCourses)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdMattersCourse", "P" + item.IdMatter.ToString() },
+            // --             { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+            // --             { "IdSpecialization", "P" + item.IdSpecialization.ToString() },
+            // --             { "IdMatter", "P" + item.IdMatter.ToString() },
+            // --             { "CourseType", item.CourseType },
+            // --             { "RatingSystem", item.RatingSystem },
+            // --             { "HoursCount", item.HoursCount }
+            // --         };
+            // --         if (server.KeyRecordExists("MattersCourses", "IdMattersCourse", item.IdMattersCourse))
+            // --             server.UpdateInto("MattersCourses", columns);
+            // --         else
+            // --             server.InsertInto("MattersCourses", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.MattersCourses.Changed = false;
+            // -- }
             // семестры
-            if (root.Semesters.Changed)
-            {
-                server.DeleteInto("Semesters");
-                OperationResult = server.LastError;
-                foreach (var item in root.Semesters)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdSemester", "P" + item.IdSemester.ToString() },
-                        { "Number", item.Number }
-                    };
-                    if (server.KeyRecordExists("Semesters", "IdSemester", item.IdSemester))
-                        server.UpdateInto("Semesters", columns);
-                    else
-                        server.InsertInto("Semesters", columns);
-                    OperationResult = server.LastError;
-                }
-                root.Semesters.Changed = false;
-            }
+            // -- if (root.Semesters.Changed)
+            // -- {
+            // --     server.DeleteInto("Semesters");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.Semesters)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdSemester", "P" + item.IdSemester.ToString() },
+            // --             { "Number", item.Number }
+            // --         };
+            // --         if (server.KeyRecordExists("Semesters", "IdSemester", item.IdSemester))
+            // --             server.UpdateInto("Semesters", columns);
+            // --         else
+            // --             server.InsertInto("Semesters", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.Semesters.Changed = false;
+            // -- }
             // учебные группы
-            if (root.StudyGroups.Changed)
-            {
-                server.DeleteInto("StudyGroups");
-                OperationResult = server.LastError;
-                foreach (var item in root.StudyGroups)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdStudyGroup", "P" + item.IdStudyGroup.ToString() },
-                        { "Number", item.Number },
-                        { "TrainingPeriod", item.TrainingPeriod },
-                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
-                        { "IdSpecialization", "P" + item.IdSpecialization.ToString() }
-                    };
-                    if (server.KeyRecordExists("StudyGroups", "IdStudyGroup", item.IdStudyGroup))
-                        server.UpdateInto("StudyGroups", columns);
-                    else
-                        server.InsertInto("StudyGroups", columns);
-                    OperationResult = server.LastError;
-                }
-                root.StudyGroups.Changed = false;
-            }
+            // -- if (root.StudyGroups.Changed)
+            // -- {
+            // --     server.DeleteInto("StudyGroups");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.StudyGroups)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdStudyGroup", "P" + item.IdStudyGroup.ToString() },
+            // --             { "Number", item.Number },
+            // --             { "TrainingPeriod", item.TrainingPeriod },
+            // --             { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+            // --             { "IdSpecialization", "P" + item.IdSpecialization.ToString() }
+            // --         };
+            // --         if (server.KeyRecordExists("StudyGroups", "IdStudyGroup", item.IdStudyGroup))
+            // --             server.UpdateInto("StudyGroups", columns);
+            // --         else
+            // --             server.InsertInto("StudyGroups", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.StudyGroups.Changed = false;
+            // -- }
             // успеваемости
-            if (root.Performances.Changed)
-            {
-                server.DeleteInto("Performances");
-                OperationResult = server.LastError;
-                foreach (var item in root.Performances)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdPerformance", "P" + item.IdPerformance.ToString() },
-                        { "IdSemester", "P" + item.IdSemester.ToString() },
-                        { "IdMatter", "P" + item.IdMatter.ToString() },
-                        { "Grade", item.Grade },
-                        { "IdStudent", "P" + item.IdStudent.ToString() }
-                    };
-                    if (server.KeyRecordExists("Performances", "IdPerformance", item.IdPerformance))
-                        server.UpdateInto("Performances", columns);
-                    else
-                        server.InsertInto("Performances", columns);
-                    OperationResult = server.LastError;
-                }
-                root.Performances.Changed = false;
-            }
+            // -- if (root.Performances.Changed)
+            // -- {
+            // --     server.DeleteInto("Performances");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.Performances)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdPerformance", "P" + item.IdPerformance.ToString() },
+            // --             { "IdSemester", "P" + item.IdSemester.ToString() },
+            // --             { "IdMatter", "P" + item.IdMatter.ToString() },
+            // --             { "Grade", item.Grade },
+            // --             { "IdStudent", "P" + item.IdStudent.ToString() }
+            // --         };
+            // --         if (server.KeyRecordExists("Performances", "IdPerformance", item.IdPerformance))
+            // --             server.UpdateInto("Performances", columns);
+            // --         else
+            // --             server.InsertInto("Performances", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.Performances.Changed = false;
+            // -- }
             // студенты
-            if (root.Students.Changed)
-            {
-                server.DeleteInto("Students");
-                OperationResult = server.LastError;
-                foreach (var item in root.Students)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdStudent", "P" + item.IdStudent.ToString() },
-                        { "FullName", item.FullName },
-                        { "BirthDay", item.BirthDay },
-                        { "EducationCertificate", item.EducationCertificate },
-                        { "ReceiptDate", item.ReceiptDate },
-                        { "Address", item.Address },
-                        { "PhoneNumber", item.PhoneNumber },
-                        { "SocialStatus", item.SocialStatus },
-                        { "Notes", item.Notes },
-                        { "Photo", item.Photo ?? new byte[] { } },
-                        { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
-                        { "IdSpecialization", "P" + item.IdSpecialization.ToString() },
-                        { "IdStudyGroup", "P" + item.IdStudyGroup.ToString() }
-                    };
-                    if (server.KeyRecordExists("Students", "IdStudent", item.IdStudent))
-                        server.UpdateInto("Students", columns);
-                    else
-                        server.InsertInto("Students", columns);
-                    OperationResult = server.LastError;
-                }
-                root.Students.Changed = false;
-            }
+            // -- if (root.Students.Changed)
+            // -- {
+            // --     server.DeleteInto("Students");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.Students)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdStudent", "P" + item.IdStudent.ToString() },
+            // --             { "FullName", item.FullName },
+            // --             { "BirthDay", item.BirthDay },
+            // --             { "EducationCertificate", item.EducationCertificate },
+            // --             { "ReceiptDate", item.ReceiptDate },
+            // --             { "Address", item.Address },
+            // --             { "PhoneNumber", item.PhoneNumber },
+            // --             { "SocialStatus", item.SocialStatus },
+            // --             { "Notes", item.Notes },
+            // --             { "Photo", item.Photo ?? new byte[] { } },
+            // --             { "IdSpeciality", "P" + item.IdSpeciality.ToString() },
+            // --             { "IdSpecialization", "P" + item.IdSpecialization.ToString() },
+            // --             { "IdStudyGroup", "P" + item.IdStudyGroup.ToString() }
+            // --         };
+            // --         if (server.KeyRecordExists("Students", "IdStudent", item.IdStudent))
+            // --             server.UpdateInto("Students", columns);
+            // --         else
+            // --             server.InsertInto("Students", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.Students.Changed = false;
+            // -- }
             // преподаватели
-            if (root.Teachers.Changed)
-            {
-                server.DeleteInto("Teachers");
-                OperationResult = server.LastError;
-                foreach (var item in root.Teachers)
-                {
-                    var columns = new Dictionary<string, object>
-                    {
-                        { "IdTeacher", "P" + item.IdTeacher.ToString() },
-                        { "FullName", item.FullName },
-                        { "IdMatter", "P" + item.IdMatter.ToString() },
-                        { "Login", item.Login },
-                        { "Password", item.Password }
-                    };
-                    if (server.KeyRecordExists("Teachers", "IdTeacher", item.IdTeacher))
-                        server.UpdateInto("Teachers", columns);
-                    else
-                        server.InsertInto("Teachers", columns);
-                    OperationResult = server.LastError;
-                }
-                root.Teachers.Changed = false;
-            }
+            // -- if (root.Teachers.Changed)
+            // -- {
+            // --     server.DeleteInto("Teachers");
+            // --     OperationResult = server.LastError;
+            // --     foreach (var item in root.Teachers)
+            // --     {
+            // --         var columns = new Dictionary<string, object>
+            // --         {
+            // --             { "IdTeacher", "P" + item.IdTeacher.ToString() },
+            // --             { "FullName", item.FullName },
+            // --             { "IdMatter", "P" + item.IdMatter.ToString() },
+            // --             { "Login", item.Login },
+            // --             { "Password", item.Password }
+            // --         };
+            // --         if (server.KeyRecordExists("Teachers", "IdTeacher", item.IdTeacher))
+            // --             server.UpdateInto("Teachers", columns);
+            // --         else
+            // --             server.InsertInto("Teachers", columns);
+            // --         OperationResult = server.LastError;
+            // --     }
+            // --     root.Teachers.Changed = false;
+            // -- }
         }
+        */
 
     }
 }
